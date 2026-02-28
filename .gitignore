@@ -1,0 +1,17 @@
+# virtual environment
+venv/
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Uploaded images
+static/uploads/
+
+# Models output
+models/
+
+.DS_Store
+
+Durian_Leaf_Disease_Dataset/
