@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnosis - Durian AI</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="dark-theme">
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-area">
+                <img src="/static/assets/durian.png" alt="logo" class="nav-logo">
+                <span class="brand-name">Durian Disease Detection</span>
+            </div>
+            <div class="nav-links">
+                <a href="/diagnosis">Diagnosis</a>
+                <a href="/history">History</a>
+                <a href="/all-diseases">All Diseases</a>
+            </div>
+            <div class="auth-buttons">
+                <a href="/register" class="btn-text" style="text-decoration: none; margin-right: 15px;">Register</a>
+                <a href="/login" class="btn-primary" style="text-decoration: none;">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="diagnosis-container">
+    <div class="diagnosis-card" id="upload-card">
+        <div class="card-header">
+            <h3>Leaf Diagnosis</h3>
+            <p>Please upload an image of a durian leaf to identify potential diseases instantly.</p>
+        </div>
+        <div class="upload-area">
+            <div class="placeholder-text"><p>No images selected</p></div>
+        </div>
+        <div class="upload-controls">
+            <button class="btn-upload-secondary">Upload</button>
+            <p class="format-info">Format: JPG, JPEG, PNG (max 10 images per upload, 5MB per image)</p>
+        </div>
+        <div class="card-footer">
+            <button class="btn-Delete">Delete All</button>
+            <button class="btn-start" onclick="showResult()">Start Analysis</button>
+        </div>
+    </div>
+
+    <div class="diagnosis-card result-card" id="result-card" style="display: none;">
+        <div class="card-header">
+            <h3>Diagnosis Result</h3>
+            <hr class="header-line">
+        </div>
+
+        <div class="result-list">
+            <div class="result-item">
+                <img src="/static/assets/leaf01.png" class="result-img">
+                <div class="result-details">
+                    <h4>โรคจุดสนิมสาหร่าย (Agal Spot)</h4>
+                    <p>ความมั่นใจ : <span class="conf-high">78 %</span> &nbsp;&nbsp; ความรุนแรง : <span class="severity-high">HIGHT</span></p>
+                </div>
+            </div>
+
+            <div class="result-item">
+                <img src="/static/assets/leaf02.png" class="result-img">
+                <div class="result-details">
+                    <h4>ไม่สามารถระบุโรคได้อย่างชัดเจน</h4>
+                    <p>(Cannot clearly identify disease)</p>
+                </div>
+            </div>
+
+            <div class="result-item">
+                <img src="/static/assets/leaf03.png" class="result-img">
+                <div class="result-details">
+                    <h4>โรคใบจุด หรือ โรคแอนแทรคโนส</h4>
+                    <p>ความมั่นใจ : <span class="conf-high">88 %</span> &nbsp;&nbsp; ความรุนแรง : <span class="severity-high">HIGHT</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <button class="btn-Delete" onclick="showUpload()">Back to Upload</button>
+            <button class="btn-start">Save to History</button>
+        </div>
+    </div>
+</main>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

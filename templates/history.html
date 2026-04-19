@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History - Durian AI</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+
+<body class="dark-theme">
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-area">
+                <img src="/static/assets/durian.png" alt="logo" class="nav-logo">
+                <span class="brand-name">Durian Disease Detection</span>
+            </div>
+            <div class="nav-links">
+                <a href="/diagnosis">Diagnosis</a>
+                <a href="/history">History</a>
+                <a href="/all-diseases">All Diseases</a>
+            </div>
+            <div class="auth-buttons">
+                <a href="/register" class="btn-text" style="text-decoration: none; margin-right: 15px;">Register</a>
+                <a href="/login" class="btn-primary" style="text-decoration: none;">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="diagnosis-container">
+        <div class="diagnosis-card history-main-card">
+            <div class="card-header history-header">
+                <h3>Diagnosis History</h3>
+                <div class="filter-area">
+                    <span>FILTER</span>
+                    <img src="/static/assets/tool.png" alt="filter" class="filter-icon"> 
+                </div>
+            </div>
+            <hr class="header-line">
+
+            <div class="result-list">
+                <div class="result-item history-item" onclick="openHistoryDetail()">
+                    <img src="/static/assets/leaf01.png" class="result-img">
+                    <div class="result-details">
+                        <h4>โรคจุดสนิมสาหร่าย (Agal Spot)</h4>
+                        <p>ความมั่นใจ : <span class="conf-high">78 %</span> &nbsp;&nbsp; ความรุนแรง : <span class="severity-high">HIGHT</span></p>
+                        <span class="history-date">วันที่ ( DATE ) 24/03/2026</span>
+                    </div>
+                </div>
+
+                <div class="result-item history-item" onclick="openHistoryDetail()">
+                    <img src="/static/assets/leaf02.png" class="result-img">
+                    <div class="result-details">
+                        <h4>ไม่สามารถระบุโรคได้อย่างชัดเจน</h4>
+                        <p>(Cannot clearly identify disease)</p>
+                        <span class="history-date">วันที่ ( DATE ) 24/03/2026</span>
+                    </div>
+                </div>
+
+                <div class="result-item history-item" onclick="openHistoryDetail()">
+                    <img src="/static/assets/leaf03.png" class="result-img">
+                    <div class="result-details">
+                        <h4>โรคใบจุด หรือ โรคแอนแทรคโนส</h4>
+                        <p>ความมั่นใจ : <span class="conf-high">88 %</span> &nbsp;&nbsp; ความรุนแรง : <span class="severity-high">HIGHT</span></p>
+                        <span class="history-date">วันที่ ( DATE ) 24/03/2026</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="history-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeHistoryDetail()">×</button>
+            
+            <div class="modal-body">
+                <div class="modal-image-section">
+                    <img src="/static/assets/leaf01.png" id="modal-img">
+                    <p class="image-filename">leaf01.png</p>
+                </div>
+                
+                <div class="modal-info-section">
+                    <h2 id="modal-title">โรคจุดสนิมสาหร่าย (Agal Spot)</h2>
+                    <div class="info-row">
+                        <span>ความมั่นใจ</span>
+                        <span class="conf-text" id="modal-conf">78 %</span>
+                    </div>
+                    <div class="info-row">
+                        <span>ระดับความรุนแรง</span>
+                        <span class="severity-text" id="modal-severity">HIGHT</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <span id="modal-date">วันที่ ( DATE ) 24/03/2026</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+    
+</body>
+</html>

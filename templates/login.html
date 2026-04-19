@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Durian Disease Detection</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+
+<body class="dark-theme">
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-area">
+                <img src="/static/assets/durian.png" alt="logo" class="nav-logo">
+                <span class="brand-name">Durian Disease Detection</span>
+            </div>
+            <div class="nav-links">
+                <a href="/diagnosis">Diagnosis</a>
+                <a href="/history">History</a>
+                <a href="/all-diseases">All Diseases</a>
+            </div>
+            <div class="auth-buttons">
+                <a href="/register" class="btn-text" style="text-decoration: none; margin-right: 15px;">Register</a>
+                <a href="/login" class="btn-primary" style="text-decoration: none;">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="hero">
+        <div class="hero-content">
+            <div class="register-card">
+                <h1 style="font-size: 2.5rem; margin-bottom: 10px;">Login to your account</h1>
+                <p style="color: #9ca3af; margin-bottom: 30px;">Welcome back! Please enter your details.</p>
+
+                <form action="/login" method="POST">
+                    <div class="form-group" style="margin-bottom: 15px; text-align: left;">
+                        <label style="display: block; color: #9ca3af; margin-bottom: 5px;">Email</label>
+                        <input type="email" name="email" placeholder="example@gmail.com" required
+                            style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white;">
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 25px; text-align: left;">
+                        <label style="display: block; color: #9ca3af; margin-bottom: 5px;">Password</label>
+                        <div style="position: relative;">
+                            <input type="password" name="password" id="password" placeholder="Enter your password"
+                                required
+                                style="width: 100%; padding: 12px; padding-right: 45px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; outline: none;">
+
+                            <div id="togglePassword"
+                                style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #9ca3af; display: flex; align-items: center;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor" id="eyeIcon">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-get-started"
+                        style="width: 100%; cursor: pointer; background-color: #6d28d9; margin-top: 25px;">Login
+                        now</button>
+                </form>
+
+                <p class="social-proof" style="margin-top: 20px;">Don't Have An Account? <a href="/register"
+                        style="color: #ffffff; text-decoration: none; font-weight: 600;">Register</a></p>
+            </div>
+        </div>
+
+        <div class="hero-image">
+            <img src="/static/assets/durianleaf.png" alt="Durian Leaf" class="main-leaf">
+            </div>
+    </main>
+
+    <script src="/static/script.js"></script>
+</body>
+
+</html>

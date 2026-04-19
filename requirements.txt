@@ -8,8 +8,8 @@ mysql-connector-python==9.6.0
 
 # AI Model & Data Processing
 tensorflow==2.16.1      
-numpy==2.4.2
+numpy==1.26.4
 Pillow==12.1.1          
-opencv-python==4.13.0.92 # สำหรับฟีเจอร์ประมวลผลภาพเดิม (ถ้ายังต้องใช้)
-scikit-learn==1.8.0     
+opencv-python==4.9.0.80 # สำหรับฟีเจอร์ประมวลผลภาพเดิม (ถ้ายังต้องใช้)
+scikit-learn==1.8.0
 python-dotenv==1.2.1    # สำหรับจัดการไฟล์ .env (เก็บรหัสผ่าน Database)

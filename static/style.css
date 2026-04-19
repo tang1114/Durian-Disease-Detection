@@ -1,4 +1,4 @@
-/* GLOBAL */
+/* GLOBAL & DARK THEME */
 * {
     margin: 0;
     padding: 0;
@@ -7,186 +7,548 @@
 }
 
 body {
-    background: linear-gradient(180deg, #f7fff3 0%, #e5f8df 100%);
-    min-height: 100vh;
-    padding-bottom: 60px;
+    background-color: #0a0a0b;
+    /* พื้นหลังดำสนิท */
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(91, 33, 182, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(76, 29, 149, 0.1) 0%, transparent 40%);
+    color: white;
+    height: 100vh;      /* บังคับความสูงเท่าหน้าจอเป๊ะ */
+    display: flex;
+    flex-direction: column; /* จัด Navbar ไว้บน Container ไว้นล่าง */
 }
 
-/* HEADER */
-.header {
-    width: 100%;
-    padding: 25px 0;
-    background: linear-gradient(90deg, #aee38c, #6cbf4f);
+/* NAVBAR */
+.navbar {
+    padding: 20px 40px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-logo {
+    width: 30px;
+}
+
+.brand-name {
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.nav-links a {
+    color: #9ca3af;
+    text-decoration: none;
+    margin: 0 20px;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: white;
+}
+
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.btn-text {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background: #6d28d9;
+    /* สีม่วงตามรูป */
+    color: white;
+    border: none;
+    padding: 8px 25px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(109, 40, 217, 0.4);
+}
+
+/* --- HERO SECTION LAYOUT --- */
+.hero {
+    max-width: 1200px;
+    margin: 150px auto;
+    /* เปลี่ยนจาก 80px เป็น 150px หรือมากกว่าตามชอบ */
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    align-items: center;
+    padding: 0 40px;
+}
+
+.hero-content h1 {
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    display: flex;
+    /* ใช้ flex เพื่อให้ลูกทุเรียนกับข้อความอยู่บรรทัดเดียวกัน */
+    align-items: center;
+    /* จัดกึ่งกลางแนวตั้ง */
+    gap: 20px;
+    /* ระยะห่างระหว่างรูปกับตัวหนังสือ */
+}
+
+.main-leaf {
+    width: 160%;
+    max-width: 1100px;
+    pointer-events: none;
+    /* คงค่าเดิมไว้ และเพิ่ม animation */
+    transform: rotate(140deg) scale(1.3);
+    filter: drop-shadow(0 0 40px rgba(109, 40, 217, 0.3));
+
+    /* สั่งให้ขยับพริ้วๆ 6 วินาที (ช้าๆ จะดูแพงครับ) */
+    animation: leafFloating 6s ease-in-out infinite;
+    /* กำหนดจุดหมุนให้อยู่แถวขั้วใบ */
+    transform-origin: center;
+}
+/* --- อนิเมชั่นใบไม้ไหว (เหมือนลมพัด) --- */
+@keyframes leafFloating {
+    0%, 100% {
+        /* ท่าปกติ */
+        transform: rotate(140deg) scale(1.3) translate(0, 0);
+    }
+    50% {
+        /* จังหวะลมพัด: ให้หมุนเพิ่มนิดหน่อย ขยายตัวนิดๆ และลอยขึ้นเยื้องไปทางซ้าย */
+        transform: rotate(145deg) scale(1.35) translate(-10px, -20px);
+        
+        /* เพิ่มความสว่างของเงาตอนลมพัดขึ้น */
+        filter: drop-shadow(0 0 60px rgba(109, 40, 217, 0.5));
+    }
+}
+
+/* --- ส่วนอื่นๆ ของ Hero Content --- */
+.hero-content p {
+    color: #9ca3af;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+.input-group {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 6px;
+    border-radius: 12px;
+    display: flex;
+    max-width: 450px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.input-group input {
+    background: transparent;
+    border: none;
+    padding: 12px 20px;
+    color: white;
+    flex-grow: 1;
+    outline: none;
+}
+
+.btn-get-started {
+    background: #6d28d9;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.social-proof {
+    margin-top: 15px;
+    font-size: 0.8rem;
+    color: #4b5563 !important;
+}
+
+
+.hero-image {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    margin-left: 100px;
+    /* ลด margin-left ลงเพื่อให้ใบไม้ขยับมาทางขวามากขึ้น */
+    height: 100%;
 }
 
-.logo {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
+.floating-badge img {
+    width: 180px;
+    height: auto;
 }
 
-.brand {
-    color: #1f481d;
-    font-size: 32px;
-    font-weight: 800;
+/* --- แถบ Wrapper ด้านล่างสุด --- */
+.ticker-wrapper {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    /* ดำโปร่งแสง */
+    backdrop-filter: blur(8px);
+    /* เอฟเฟกต์กระจกฝ้า */
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    /* เส้นขอบด้านบนบางๆ */
+    padding: 12px 0;
+    overflow: hidden;
+    /* กันข้อความทะลุออกนอกแถบ */
+    z-index: 9999;
+    /* ให้อยู่บนสุดเสมอ */
 }
 
-/* HERO SECTION */
-.hero-section {
-    max-width: 600px;
-    margin: 40px auto;
-    text-align: center;
+/* --- ตัวอักษรที่วิ่ง --- */
+.ticker-text {
+    white-space: nowrap;
+    /* บังคับให้เป็นบรรทัดเดียวห้ามตัดบรรทัด */
+    display: inline-block;
+    padding-left: 100%;
+    /* เริ่มวิ่งจากขอบขวาสุดของหน้าจอ */
+    font-size: 0.9rem;
+    color: #e5e7eb;
+    /* สีขาวนวลๆ */
+    font-weight: 400;
+    animation: marquee 35s linear infinite;
+    /* วิ่งวนไปเรื่อยๆ 35 วินาทีต่อรอบ */
 }
 
-.subtitle {
-    font-size: 17px;
-    color: #4b7045;
+/* --- อนิเมชั่นสั่งให้ขยับจากขวาไปซ้าย --- */
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+/* --- คอนเทนเนอร์หลัก จัดให้กล่องอยู่กึ่งกลางหน้าจอ --- */
+.diagnosis-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 80px); /* ความสูงหน้าจอหัก Navbar ออก */
+    padding: 20px;
+    overflow: hidden; /* ป้องกันไม่ให้ตัว container เองเกิด scrollbar */
+}
+
+/* --- ตัวกล่อง Popup สีขาว --- */
+.diagnosis-card {
+    background: white;
+    width: 90%;
+    max-width: 1000px;
+    max-height: 85vh;    /* ลดลงเหลือ 85% ของความสูงหน้าจอเพื่อให้ดูโปร่งขึ้น */
+    border-radius: 20px;
+    padding: 30px 60px;  /* ลด Padding บน-ล่าง จาก 40px เหลือ 30px */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* --- หัวข้อในกล่อง --- */
+.card-header h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #111;
+}
+
+.card-header p {
+    font-size: 0.85rem;
+    color: #666;
     margin-bottom: 25px;
 }
 
-/* UPLOAD ZONE */
-.upload-zone {
+/* --- พื้นที่แสดงรูปภาพที่อัปโหลด --- */
+.upload-area {
     width: 100%;
-    height: 330px;
-    background: rgba(255, 255, 255, 0.45);
-    backdrop-filter: blur(18px);
-    border-radius: 22px;
-    border: 3px dashed #8cd17f;
-    color: #4f7a42;
-    font-size: 18px;
-    font-weight: 500;
+    min-height: 450px; /* เพิ่มความสูงจากเดิม เพื่อให้ดูโล่งและเต็มตา */
+    border: 2px dashed #ccc; /* ปรับเส้นประให้หนาขึ้นนิดนึงเพื่อให้เห็นชัด */
+    border-radius: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
-    transition: 0.3s ease;
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+    background: #fcfcfc;
+    margin-bottom: 20px; /* เพิ่มระยะห่างด้านล่างก่อนถึงปุ่ม Upload */
 }
-
-.upload-zone:hover {
-    transform: scale(1.03);
-    background: rgba(255, 255, 255, 0.70);
-}
-
-.preview {
-    max-height: 95%;
-    max-width: 95%;
-    border-radius: 20px;
-    animation: fadeIn 0.4s ease;
-}
-
-.hidden {
-    display: none;
-}
-
-/* BUTTON */
-.analyze-btn {
-    margin-top: 28px;
-    padding: 15px 45px;
-    font-size: 20px;
-    border: none;
-    border-radius: 14px;
-    font-weight: 600;
-    color: white;
-    cursor: pointer;
-    background: linear-gradient(90deg, #70d84f, #4da634);
-    box-shadow: 0px 6px 14px rgba(0,0,0,0.2);
-    transition: 0.25s ease;
-}
-
-.analyze-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0px 10px 20px rgba(0,0,0,0.25);
-}
-
-/* RESULT CARD */
-.result-card {
-    margin-top: 35px;
-    background: rgba(255, 255, 255, 0.85);
-    padding: 25px;
-    border-radius: 18px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+.placeholder-text {
+    color: #aaa;
+    font-size: 0.9rem;
     text-align: center;
-    animation: fadeIn 0.4s ease;
 }
 
-/* Prediction title */
-#resultTitle {
-    font-size: 22px;
-    font-weight: 700;
-    color: #2a5c26;
-    margin-bottom: 14px;
+/* --- ส่วนปุ่ม Upload และข้อมูลไฟล์ --- */
+.upload-controls {
+    text-align: center;
+    margin-bottom: 20px; /* ลดจาก 50px เหลือ 20px */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;          /* ลดระยะห่างระหว่างปุ่มกับตัวหนังสือจิ๋ว */
 }
 
-/* Toggle button */
-.toggle-btn {
-    background: #6abd48;
-    color: white;
-    padding: 12px 25px;
+.btn-upload-secondary {
+    background: #f3e8ff;
+    border: none;
+    color: #6d28d9;
+    padding: 12px 40px; /* เพิ่มขนาดปุ่มให้ดูใหญ่ขึ้นตามขนาดกล่อง */
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-upload-secondary:hover {
+    background: #e9d5ff;
+}
+
+.format-info {
+    font-size: 0.7rem;
+    color: #999;
+    margin-top: 10px;
+}
+
+/* --- แถบปุ่มกดด้านล่าง --- */
+.card-footer {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+/* ปุ่มยกเลิก */
+.btn-Delete {
+    flex: 1;
+    background: white;
+    border: 1px solid #ddd;
+    color: #555;
+    padding: 16px;
     border-radius: 10px;
-    border: none;
-    cursor: pointer;
     font-weight: 600;
-    font-size: 16px;
-    transition: 0.25s;
-    margin-bottom: 12px;
-    display: inline-block;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
-.toggle-btn:hover {
-    background: #58a33d;
-    transform: translateY(-2px);
-    box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+.btn-Delete:hover {
+    background: #f9f9f9;
 }
 
-/* Probability container */
-.prob-wrapper {
-    padding: 15px;
-    background: #f8fff3;
+/* ปุ่มเริ่มวิเคราะห์ */
+.btn-start {
+    flex: 1;
+    background: linear-gradient(135deg, #6d28d9, #4c1d95); /* ไล่เฉดสีม่วง */
+    border: none;
+    color: white;
+    padding: 16px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(109, 40, 217, 0.3);
+    transition: 0.3s;
+}
+
+.btn-start:hover {
+    transform: translateY(-2px); /* ลอยขึ้นนิดนึงเวลาชี้ */
+    box-shadow: 0 6px 15px rgba(109, 40, 217, 0.4);
+}
+/* --- Result Card Styles --- */
+.header-line {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 10px 0 20px 0;
+}
+
+.result-list {
+    flex: 1;
+    overflow-y: auto; /* ถ้ารายการเยอะจะ scroll แค่ข้างในนี้ */
+    padding-right: 5px;
+    margin-bottom: 20px;
+}
+
+.result-item {
+    background: linear-gradient(90deg, #6d28d9 0%, #2e1065 100%);
     border-radius: 12px;
-    margin-top: 8px;
-    border: 1px solid #dceccc;
-    box-shadow: 0px 3px 10px rgba(0,0,0,0.08);
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 15px;
+    color: white;
+    position: relative;
 }
 
-/* Smooth toggle */
-.hidden {
-    display: none;
+.result-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
 }
 
-
-.result-card h2 {
-    color: #2a5c26;
-    font-size: 24px;
-    margin-bottom: 12px;
+.result-details h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 5px;
 }
 
-#probBlock p {
-    margin: 8px 0;
-    font-weight: 500;
-    color: #3a6636;
+.result-details p {
+    font-size: 0.85rem;
+    color: #e5e7eb;
 }
 
-/* FOOTER */
-.footer {
-    position: fixed;
-    bottom: 0;
+.conf-high { color: #22c55e; font-weight: bold; } /* สีเขียว */
+.severity-high { color: #ef4444; font-weight: bold; } /* สีแดง */
+
+/* ตกแต่ง Scrollbar ของช่อง Result ให้ดูสวยๆ */
+.result-list::-webkit-scrollbar { width: 5px; }
+.result-list::-webkit-scrollbar-thumb { background: #ddd; border-radius: 10px; }
+/* --- History Specific Styles --- */
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filter-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #6d28d9;
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.filter-icon {
+    width: 18px;
+    height: 18px;
+}
+
+/* ลบอันเดิมทิ้ง แล้วใช้อันนี้แทนครับ */
+.history-item {
+    cursor: pointer;
+    transition: all 0.3s ease; /* ให้การเปลี่ยนสีมันนุ่มนวล */
+    border: 2px solid transparent; /* เตรียมเส้นขอบไว้กันมันกระตุก */
+}
+
+.history-item:hover {
+    /* ไม่ใช้ scale แล้วเพื่อกันกล่องขาวขยับ */
+    background: linear-gradient(90deg, #7c3aed 0%, #4c1d95 100%); /* สว่างขึ้นนิดนึง */
+    border-color: rgba(255, 255, 255, 0.2); /* เพิ่มเส้นขอบจางๆ */
+}
+
+.history-date {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* ปรับความสูงของรายการเผื่อที่ให้วันที่ */
+.history-item .result-details {
     width: 100%;
-    padding: 14px 0;
-    background: #c0e6b0;
-    text-align: center;
-    color: #2c5c24;
-    font-size: 14px;
-    box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.1);
+    padding-bottom: 10px;
 }
 
-/* ANIMATION */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+/* --- ปรับแต่ง Modal History ให้ใหญ่และบังจอ --- */
+.modal-overlay {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* ปรับพื้นหลังให้ดำสนิท 100% หรือ 0.95 เพื่อบังข้างหลัง */
+    background: rgba(0, 0, 0, 0.98); 
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+    padding: 0; /* เอา padding ออกเพื่อให้ขยายได้เต็มที่ */
 }
+
+.modal-content {
+    background: #000; /* พื้นหลังกล่องดำสนิท */
+    width: 95%;      /* ขยายความกว้างเกือบเต็มจอ */
+    max-width: 1100px; /* กำหนดความกว้างสูงสุดให้ใหญ่ขึ้น */
+    height: auto;
+    max-height: 90vh; /* ไม่ให้สูงเกินหน้าจอ */
+    border-radius: 15px;
+    position: relative;
+    padding: 60px;    /* เพิ่มพื้นที่ว่างข้างในให้ดูโปร่งและใหญ่ */
+    border: 1px solid #333; /* ขอบจางๆ ให้ดูมีมิติ */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 50px rgba(109, 40, 217, 0.2); /* เพิ่มรัศมีแสงม่วงจางๆ */
+}
+
+/* ปรับส่วนจัดวางข้างในให้ใหญ่ขึ้น */
+.modal-body {
+    display: flex;
+    gap: 60px; /* เพิ่มระยะห่างระหว่างรูปกับข้อความ */
+    align-items: center;
+}
+
+.modal-image-section {
+    flex: 1.5; /* ให้พื้นที่ฝั่งรูปเยอะขึ้น */
+}
+
+.modal-image-section img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    object-fit: contain;
+}
+
+.modal-info-section {
+    flex: 1;
+}
+
+/* ปรับหัวข้อโรคให้ใหญ่สะใจ */
+.modal-info-section h2 {
+    color: #6d28d9;
+    font-size: 2.5rem; 
+    font-weight: 800;
+    margin-bottom: 40px;
+}
+
+.close-modal {
+    position: absolute;
+    top: 20px; right: 20px;
+    background: #ff0040;
+    border: none; border-radius: 50%;
+    width: 32px; height: 32px;
+    color: white; font-size: 20px; font-weight: bold;
+    cursor: pointer; display: flex; justify-content: center; align-items: center;
+}
+
+.modal-body { display: flex; gap: 40px; align-items: center; }
+.modal-image-section { flex: 1.2; text-align: center; }
+.modal-image-section img { width: 100%; border-radius: 8px; }
+.modal-info-section { flex: 1; }
+.modal-info-section h2 { color: #6d28d9; font-size: 2rem; margin-bottom: 40px; }
+
+.info-row { 
+    display: flex; justify-content: space-between; 
+    margin-bottom: 30px; font-size: 1.3rem; font-weight: 600; color: #fff; 
+}
+.conf-text { color: #22c55e; }
+.severity-text { color: #ef4444; }
+.modal-footer { text-align: right; margin-top: 20px; color: #777; font-size: 0.8rem; }

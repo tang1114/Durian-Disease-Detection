@@ -2,49 +2,64 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <title>Durian Leaf Disease Detector</title>
-    <link rel="stylesheet" href="/static/style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Durian Disease Detection - AI Driven</title>
+    <link rel="stylesheet" href="/static/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body class="dark-theme">
 
-    <header class="header">
-        <img src="/static/assets/durian.png" class="logo">
-        <h1 class="brand">Durian Leaf Disease Detector</h1>
-    </header>
-
-    <section class="hero-section">
-        <p class="subtitle">Analyze durian leaf health with AI-powered detection.</p>
-
-        <div id="uploadZone" class="upload-zone" onclick="chooseFile()">
-            <div id="uploadText">Click or drop image here</div>
-            <img id="preview" class="preview hidden" />
-        </div>
-
-        <input id="fileInput" type="file" hidden onchange="previewImage(event)" />
-
-        <button class="analyze-btn" onclick="analyze()">Analyze Leaf </button>
-
-        <div id="resultCard" class="result-card hidden">
-
-            <h2 id="resultTitle">Prediction Result :</h2>
-
-            <button class="toggle-btn" onclick="toggleProb()">Show Possibilities ▼</button>
-
-            <div id="probWrapper" class="prob-wrapper hidden">
-                <div id="probBlock"></div>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-area">
+                <img src="/static/assets/durian.png" alt="logo" class="nav-logo">
+                <span class="brand-name">Durian Disease Detection</span>
             </div>
+            <div class="nav-links">
+                <a href="/diagnosis">Diagnosis</a>
+                <a href="/history">History</a>
+                <a href="/all-diseases">All Diseases</a>
+            </div>
+            <div class="auth-buttons">
+                <a href="/register" class="btn-text" style="text-decoration: none; margin-right: 15px;">Register</a>
+                <a href="/login" class="btn-primary" style="text-decoration: none;">Login</a>
+            </div>
+        </div>
+    </nav>
 
+    <main class="hero">
+        <div class="hero-content">
+            <h1>
+                <div class="floating-badge">
+                    <img src="/static/assets/durian.png" alt="icon">
+                </div>
+                AI-Driven Durian Leaf Diagnosis
+            </h1>
+            <p>Identify common durian leaf diseases in seconds. Just upload a photo and let our AI provide instant, accurate diagnosis to save your orchard.</p>
+
+            <div class="cta-area">
+                <div class="input-group">
+                    <input type="email" placeholder="Enter email" id="emailInput">
+                    <a href="/register" class="btn-get-started" style="text-decoration: none; display: flex; align-items: center; justify-content: center;">Get Started</a>
+                </div>
+                <p class="social-proof">Join 1,000+ farmers using AI to protect their durian crops.</p>
+            </div>
         </div>
 
-    </section>
+        <div class="hero-image">
+            <img src="/static/assets/durianleaf.png" alt="Durian Leaf" class="main-leaf">
+        </div>
+    </main>
 
-    <footer class="footer">
-        CSC447 © 2025
-    </footer>
+    <div class="ticker-wrapper">
+        <div class="ticker-text">
+            • ระบบวิเคราะห์สุขภาพใบพืชอัตโนมัติด้วยเทคโนโลยี AI • ตรวจสอบใบง่ายๆ เพียงแค่อัปโหลดรูปภาพ • วิเคราะห์ผลแม่นยำและรวดเร็ว • รองรับการใช้งานผ่านมือถือและคอมพิวเตอร์ • ช่วยลดความเสี่ยงและเพิ่มผลผลิตให้สวนทุเรียนของคุณ • เริ่มใช้งานได้ทันทีโดยไม่ต้องติดตั้งโปรแกรม • 
+        </div>
+    </div>
 
     <script src="/static/script.js"></script>
 </body>
+
 </html>

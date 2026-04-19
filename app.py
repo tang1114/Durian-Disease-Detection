@@ -57,7 +57,7 @@
 #         "probabilities": prob_dict,
 #     }
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify , render_template
 import mysql.connector
 import os
 from dotenv import load_dotenv
@@ -79,7 +79,27 @@ def get_db_connection():
 # 1. ทดสอบว่า Flask รันขึ้นไหม
 @app.route('/')
 def home():
-    return "🚀 Flask is running successfully!"
+    return render_template('index.html')
+
+@app.route('/register')
+def register():
+    return render_template('register.html')
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/all-diseases')
+def all_diseases():
+    return render_template('AllDiseases.html') 
+
+@app.route('/diagnosis')
+def diagnosis():
+    return render_template('diagnosis.html') 
+
+@app.route('/history')
+def history():
+    return render_template('history.html') 
 
 # 2. ทดสอบว่า Flask คุยกับ MariaDB รู้เรื่องไหม
 @app.route('/test-db')
