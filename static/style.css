@@ -8,14 +8,15 @@
 
 body {
     background-color: #0a0a0b;
-    /* พื้นหลังดำสนิท */
     background-image:
         radial-gradient(circle at 10% 20%, rgba(91, 33, 182, 0.15) 0%, transparent 40%),
         radial-gradient(circle at 90% 80%, rgba(76, 29, 149, 0.1) 0%, transparent 40%);
     color: white;
-    height: 100vh;      /* บังคับความสูงเท่าหน้าจอเป๊ะ */
+    min-height: 100vh;      /* 🔥 แก้ตรงนี้: เปลี่ยนจาก height เป็น min-height ให้จอยืดได้ */
     display: flex;
-    flex-direction: column; /* จัด Navbar ไว้บน Container ไว้นล่าง */
+    flex-direction: column;
+    overflow-x: hidden;     /* ป้องกันจอเลื่อนซ้ายขวา */
+    overflow-y: auto;       /* 🔥 บังคับให้ไถขึ้นลงได้เสมอ */
 }
 
 /* NAVBAR */
@@ -24,6 +25,8 @@ body {
     background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative; 
+    z-index: 9999;
 }
 
 .nav-container {
@@ -47,6 +50,7 @@ body {
 .brand-name {
     font-weight: 600;
     font-size: 1.2rem;
+    white-space: nowrap; /* ห้ามชื่อแบรนด์ตกบรรทัดเด็ดขาด */
 }
 
 .nav-links a {
@@ -77,7 +81,6 @@ body {
 
 .btn-primary {
     background: #6d28d9;
-    /* สีม่วงตามรูป */
     color: white;
     border: none;
     padding: 8px 25px;
@@ -87,11 +90,137 @@ body {
     box-shadow: 0 4px 15px rgba(109, 40, 217, 0.4);
 }
 
+/* --- ส่วนของ Menu Wrapper และ Hamburger จอคอมปกติ --- */
+.menu-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1;
+}
+
+.hamburger {
+    display: none; /* จอคอม: ซ่อนไว้ */
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 10px;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    border-radius: 2px;
+}
+
+/* =========================================
+   Responsive: เมื่อย่อจอลงมาถึง 1100px (ป้องกันการเบียด)
+   ========================================= */
+@media (max-width: 1100px) {
+    .navbar {
+        position: relative;
+    }
+    .hamburger {
+        display: flex;
+    }
+    .menu-wrapper {
+        display: none; 
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #0f172a;
+        flex-direction: column;
+        padding: 15px 0 30px 0; 
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 0 0 16px 16px;
+        z-index: 9999;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); 
+    }
+    .menu-wrapper.active {
+        display: flex; 
+    }
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        gap: 5px;
+    }
+    .nav-links a {
+        display: block;
+        width: 85%; 
+        margin: 0;
+        padding: 12px 20px;
+        text-align: center;
+        font-size: 1.1rem; 
+        border-radius: 10px;
+        transition: 0.3s;
+    }
+    .nav-links a:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: white;
+    }
+    .auth-buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 85%;
+        margin: 15px auto 0 auto; 
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1); 
+        gap: 15px;
+    }
+    .auth-buttons span {
+        margin: 0 !important; 
+        font-size: 1rem;
+    }
+    .auth-buttons .btn-primary, 
+    .auth-buttons .btn-text {
+        width: 100%; 
+        text-align: center;
+        padding: 12px;
+        margin: 0 !important; 
+        box-sizing: border-box;
+    }
+    /*disease description*/
+    .disease-card-wide {
+        flex-direction: column; /* 🔥 บังคับเรียงบน(รูป) - ล่าง(ข้อความ) */
+        height: auto; /* ปลดล็อกความสูงของการ์ด ให้ยืดตามเนื้อหา */
+    }
+    /* ฝั่งบน: รูปภาพ */
+    .disease-img-wrapper {
+        flex: 0 0 250px; /* 🔥 ล็อกความสูงรูปบนมือถือไว้ที่ 250px สัดส่วนจะสวยพอดี */
+        width: 100%; /* กว้างเต็มหน้าจอ */
+        /* ไม่ต้องแก้ position ของ img ด้านใน ปล่อยให้มัน cover ตามเดิม */
+    }
+    /* ฝั่งล่าง: เนื้อหา */
+    .disease-content {
+        padding: 25px; /* ลด Padding ลงนิดนึง */
+        overflow: visible; /* ให้การ์ดยืดตามข้อมูลไปเลย */
+    }
+    .disease-title {
+        font-size: 1.5rem; /* ลดขนาดหัวข้อลงนิดนึงบนมือถือ */
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+    }
+    .thai-name {
+        font-size: 1.1rem !important; /* ลดขนาดชื่อไทยลงด้วย */
+    }
+    .raw-description {
+        overflow-y: visible; /* 🔥 ไม่ต้องมี scroll ในกล่องข้อความแล้ว ให้ยืดตามการ์ดไปเลย */
+        max-height: none; /* เอาขีดจำกัดความสูงออก */
+        padding-right: 0;
+        font-size: 0.95rem; /* ลดขนาดฟอนต์นิดนึงให้อ่านสบาย */
+    }
+}
+
 /* --- HERO SECTION LAYOUT --- */
 .hero {
     max-width: 1200px;
     margin: 150px auto;
-    /* เปลี่ยนจาก 80px เป็น 150px หรือมากกว่าตามชอบ */
     display: grid;
     grid-template-columns: 1.3fr 1fr;
     align-items: center;
@@ -104,42 +233,25 @@ body {
     line-height: 1.1;
     margin-bottom: 20px;
     display: flex;
-    /* ใช้ flex เพื่อให้ลูกทุเรียนกับข้อความอยู่บรรทัดเดียวกัน */
     align-items: center;
-    /* จัดกึ่งกลางแนวตั้ง */
     gap: 20px;
-    /* ระยะห่างระหว่างรูปกับตัวหนังสือ */
 }
 
 .main-leaf {
     width: 160%;
     max-width: 1100px;
     pointer-events: none;
-    /* คงค่าเดิมไว้ และเพิ่ม animation */
     transform: rotate(140deg) scale(1.3);
     filter: drop-shadow(0 0 40px rgba(109, 40, 217, 0.3));
-
-    /* สั่งให้ขยับพริ้วๆ 6 วินาที (ช้าๆ จะดูแพงครับ) */
     animation: leafFloating 6s ease-in-out infinite;
-    /* กำหนดจุดหมุนให้อยู่แถวขั้วใบ */
     transform-origin: center;
 }
-/* --- อนิเมชั่นใบไม้ไหว (เหมือนลมพัด) --- */
+
 @keyframes leafFloating {
-    0%, 100% {
-        /* ท่าปกติ */
-        transform: rotate(140deg) scale(1.3) translate(0, 0);
-    }
-    50% {
-        /* จังหวะลมพัด: ให้หมุนเพิ่มนิดหน่อย ขยายตัวนิดๆ และลอยขึ้นเยื้องไปทางซ้าย */
-        transform: rotate(145deg) scale(1.35) translate(-10px, -20px);
-        
-        /* เพิ่มความสว่างของเงาตอนลมพัดขึ้น */
-        filter: drop-shadow(0 0 60px rgba(109, 40, 217, 0.5));
-    }
+    0%, 100% { transform: rotate(140deg) scale(1.3) translate(0, 0); }
+    50% { transform: rotate(145deg) scale(1.35) translate(-10px, -20px); filter: drop-shadow(0 0 60px rgba(109, 40, 217, 0.5)); }
 }
 
-/* --- ส่วนอื่นๆ ของ Hero Content --- */
 .hero-content p {
     color: #9ca3af;
     font-size: 1.1rem;
@@ -175,12 +287,7 @@ body {
     cursor: pointer;
 }
 
-.social-proof {
-    margin-top: 15px;
-    font-size: 0.8rem;
-    color: #4b5563 !important;
-}
-
+.social-proof { margin-top: 15px; font-size: 0.8rem; color: #4b5563 !important; }
 
 .hero-image {
     position: relative;
@@ -188,367 +295,344 @@ body {
     justify-content: center;
     align-items: center;
     margin-left: 100px;
-    /* ลด margin-left ลงเพื่อให้ใบไม้ขยับมาทางขวามากขึ้น */
     height: 100%;
 }
 
-.floating-badge img {
-    width: 180px;
-    height: auto;
-}
+.floating-badge img { width: 180px; height: auto; }
 
 /* --- แถบ Wrapper ด้านล่างสุด --- */
 .ticker-wrapper {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
+    bottom: 0; left: 0; width: 100%;
     background: rgba(0, 0, 0, 0.7);
-    /* ดำโปร่งแสง */
     backdrop-filter: blur(8px);
-    /* เอฟเฟกต์กระจกฝ้า */
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    /* เส้นขอบด้านบนบางๆ */
-    padding: 12px 0;
-    overflow: hidden;
-    /* กันข้อความทะลุออกนอกแถบ */
-    z-index: 9999;
-    /* ให้อยู่บนสุดเสมอ */
+    padding: 12px 0; overflow: hidden; z-index: 9999;
 }
 
-/* --- ตัวอักษรที่วิ่ง --- */
 .ticker-text {
     white-space: nowrap;
-    /* บังคับให้เป็นบรรทัดเดียวห้ามตัดบรรทัด */
     display: inline-block;
     padding-left: 100%;
-    /* เริ่มวิ่งจากขอบขวาสุดของหน้าจอ */
-    font-size: 0.9rem;
-    color: #e5e7eb;
-    /* สีขาวนวลๆ */
-    font-weight: 400;
+    font-size: 0.9rem; color: #e5e7eb; font-weight: 400;
     animation: marquee 35s linear infinite;
-    /* วิ่งวนไปเรื่อยๆ 35 วินาทีต่อรอบ */
 }
 
-/* --- อนิเมชั่นสั่งให้ขยับจากขวาไปซ้าย --- */
-@keyframes marquee {
-    0% {
-        transform: translateX(0);
-    }
+@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-    100% {
-        transform: translateX(-100%);
-    }
-}
-/* --- คอนเทนเนอร์หลัก จัดให้กล่องอยู่กึ่งกลางหน้าจอ --- */
+/* --- คอนเทนเนอร์หลัก --- */
 .diagnosis-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: calc(100vh - 80px); /* ความสูงหน้าจอหัก Navbar ออก */
-    padding: 20px;
-    overflow: hidden; /* ป้องกันไม่ให้ตัว container เองเกิด scrollbar */
+    min-height: calc(100vh - 80px); /* 🔥 แก้ไข: เปลี่ยนเป็น min-height ให้ยืดหดได้ */
+    height: auto; 
+    padding: 40px 20px; /* เพิ่มพื้นที่หายใจให้กล่อง */
+    /* 🔥 เอา overflow: hidden; ออกไปเลย เนื้อหาจะได้เลื่อนได้ */
 }
 
 /* --- ตัวกล่อง Popup สีขาว --- */
 .diagnosis-card {
     background: white;
-    width: 90%;
+    width: 100%; /* เปลี่ยนเป็น 100% แล้วคุมด้วย max-width */
     max-width: 1000px;
-    max-height: 85vh;    /* ลดลงเหลือ 85% ของความสูงหน้าจอเพื่อให้ดูโปร่งขึ้น */
+    max-height: none; /* 🔥 ปลดล็อคความสูง ให้ยืดตามเนื้อหาได้ */
     border-radius: 20px;
-    padding: 30px 60px;  /* ลด Padding บน-ล่าง จาก 40px เหลือ 30px */
+    padding: 30px 60px;  
     display: flex;
     flex-direction: column;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
-/* --- หัวข้อในกล่อง --- */
-.card-header h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #111;
-}
-
-.card-header p {
-    font-size: 0.85rem;
-    color: #666;
-    margin-bottom: 25px;
-}
+.card-header h3 { font-size: 1.5rem; font-weight: 600; margin-bottom: 8px; color: #111; }
+.card-header p { font-size: 0.85rem; color: #666; margin-bottom: 25px; }
 
 /* --- พื้นที่แสดงรูปภาพที่อัปโหลด --- */
 .upload-area {
     width: 100%;
-    min-height: 450px; /* เพิ่มความสูงจากเดิม เพื่อให้ดูโล่งและเต็มตา */
-    border: 2px dashed #ccc; /* ปรับเส้นประให้หนาขึ้นนิดนึงเพื่อให้เห็นชัด */
+    min-height: 450px;
+    border: 2px dashed #ccc;
     border-radius: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
     background: #fcfcfc;
-    margin-bottom: 20px; /* เพิ่มระยะห่างด้านล่างก่อนถึงปุ่ม Upload */
-}
-.placeholder-text {
-    color: #aaa;
-    font-size: 0.9rem;
-    text-align: center;
-}
-
-/* --- ส่วนปุ่ม Upload และข้อมูลไฟล์ --- */
-.upload-controls {
-    text-align: center;
-    margin-bottom: 20px; /* ลดจาก 50px เหลือ 20px */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;          /* ลดระยะห่างระหว่างปุ่มกับตัวหนังสือจิ๋ว */
-}
-
-.btn-upload-secondary {
-    background: #f3e8ff;
-    border: none;
-    color: #6d28d9;
-    padding: 12px 40px; /* เพิ่มขนาดปุ่มให้ดูใหญ่ขึ้นตามขนาดกล่อง */
-    border-radius: 30px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.btn-upload-secondary:hover {
-    background: #e9d5ff;
-}
-
-.format-info {
-    font-size: 0.7rem;
-    color: #999;
-    margin-top: 10px;
-}
-
-/* --- แถบปุ่มกดด้านล่าง --- */
-.card-footer {
-    display: flex;
-    gap: 15px;
-    margin-top: 10px;
-}
-
-/* ปุ่มยกเลิก */
-.btn-Delete {
-    flex: 1;
-    background: white;
-    border: 1px solid #ddd;
-    color: #555;
-    padding: 16px;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.btn-Delete:hover {
-    background: #f9f9f9;
-}
-
-/* ปุ่มเริ่มวิเคราะห์ */
-.btn-start {
-    flex: 1;
-    background: linear-gradient(135deg, #6d28d9, #4c1d95); /* ไล่เฉดสีม่วง */
-    border: none;
-    color: white;
-    padding: 16px;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(109, 40, 217, 0.3);
-    transition: 0.3s;
-}
-
-.btn-start:hover {
-    transform: translateY(-2px); /* ลอยขึ้นนิดนึงเวลาชี้ */
-    box-shadow: 0 6px 15px rgba(109, 40, 217, 0.4);
-}
-/* --- Result Card Styles --- */
-.header-line {
-    border: 0;
-    border-top: 1px solid #eee;
-    margin: 10px 0 20px 0;
-}
-
-.result-list {
-    flex: 1;
-    overflow-y: auto; /* ถ้ารายการเยอะจะ scroll แค่ข้างในนี้ */
-    padding-right: 5px;
     margin-bottom: 20px;
+    overflow-y: auto; 
+}
+#uploadText { text-align: center; width: 100%; color: #888; }
+.placeholder-text { color: #ffffff; font-size: 0.9rem; text-align: center; }
+.preview-wrapper { display: flex; justify-content: center; }
+.preview-grid { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; max-width: 700px; margin: 0 auto; }
+.preview-grid img { width: 100%; height: 120px; object-fit: cover; border-radius: 10px; }
+.preview-item { display: flex; flex-direction: column; align-items: center; width: 120px; margin: 5px; }
+.preview-img-custom { width: 120px; height: 120px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+.preview-item p {
+    margin-top: 5px; font-size: 12px; color: #242424; text-align: center;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
 }
 
-.result-item {
-    background: linear-gradient(90deg, #6d28d9 0%, #2e1065 100%);
-    border-radius: 12px;
-    padding: 15px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 15px;
-    color: white;
-    position: relative;
-}
+.upload-controls { text-align: center; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.btn-upload-secondary { background: #f3e8ff; border: none; color: #6d28d9; padding: 12px 40px; border-radius: 30px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+.btn-upload-secondary:hover { background: #e9d5ff; }
+.format-info { font-size: 0.7rem; color: #999; margin-top: 10px; }
 
-.result-img {
-    width: 80px;
-    height: 80px;
-    border-radius: 8px;
-    object-fit: cover;
-}
+.card-footer { display: flex; gap: 15px; margin-top: 10px; }
+.btn-Delete { flex: 1; background: white; border: 1px solid #ddd; color: #555; padding: 16px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+.btn-Delete:hover { background: #f9f9f9; }
+.btn-start { flex: 1; background: linear-gradient(135deg, #6d28d9, #4c1d95); border: none; color: white; padding: 16px; border-radius: 10px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(109, 40, 217, 0.3); transition: 0.3s; }
+.btn-start:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(109, 40, 217, 0.4); }
 
-.result-details h4 {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
+/* --- Popups & Modals --- */
+.custom-alert-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: flex; justify-content: center; align-items: center; z-index: 20000; backdrop-filter: blur(8px); animation: fadeIn 0.3s ease; }
+.custom-alert-box { background: #1e293b; padding: 30px; border-radius: 20px; text-align: center; border: 2px solid #6d28d9; box-shadow: 0 10px 40px rgba(109, 40, 217, 0.3); max-width: 400px; width: 90%; animation: popUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.custom-alert-box p { color: #e5e7eb; font-size: 1.1rem; margin-bottom: 25px; line-height: 1.5; }
+.custom-alert-btn { background: linear-gradient(135deg, #6d28d9, #4c1d95); color: white; border: none; padding: 12px 35px; border-radius: 12px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+.custom-alert-btn:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(109, 40, 217, 0.4); }
 
-.result-details p {
-    font-size: 0.85rem;
-    color: #e5e7eb;
-}
+.loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 10, 11, 0.9); display: flex; justify-content: center; align-items: center; z-index: 19999; backdrop-filter: blur(10px); }
+.loading-modal { background: #1e293b; padding: 40px; border-radius: 24px; text-align: center; border: 1px solid rgba(109, 40, 217, 0.3); width: 350px; box-shadow: 0 0 50px rgba(109, 40, 217, 0.2); }
+.loading-spinner { width: 70px; height: 70px; border: 5px solid rgba(255,255,255,0.1); border-top: 5px solid #6d28d9; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 25px auto; }
+.loading-text { color: #c084fc; font-size: 1.1rem; margin-bottom: 20px; font-weight: 600; }
+.progress-track { width: 100%; background: #374151; border-radius: 20px; overflow: hidden; height: 12px; }
+.progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #6d28d9, #a855f7); transition: width 0.4s ease; box-shadow: 0 0 10px rgba(168, 85, 247, 0.5); }
 
-.conf-high { color: #22c55e; font-weight: bold; } /* สีเขียว */
-.severity-high { color: #ef4444; font-weight: bold; } /* สีแดง */
+/* --- Result Card Styles --- */
+.header-line { border: 0; border-top: 1px solid #eee; margin: 10px 0 20px 0; }
+.result-item-card, .result-item { background: linear-gradient(90deg, #6d28d9 0%, #2e1065 100%); border-radius: 12px; padding: 12px 15px; display: flex; align-items: center; gap: 15px; margin-bottom: 12px; color: white; position: relative; border: 2px solid transparent; transition: transform 0.2s, background 0.3s, border-color 0.3s; }
+.result-item-card:hover, .result-item:hover { transform: translateY(-2px); background: linear-gradient(90deg, #7c3aed 0%, #4c1d95 100%); border-color: rgba(255, 255, 255, 0.15); }
+.result-img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+.result-details { flex: 1; }
+.result-details h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 3px; color: #f3e8ff; }
+.result-details p { font-size: 0.8rem; color: #cbd5e1; margin: 0; }
+.conf-high { color: #4ade80; font-weight: bold; } 
+.severity-high { color: #f87171; font-weight: bold; } 
+.result-list { flex: 1; overflow-y: auto; padding-right: 8px; margin-bottom: 20px; max-height: 350px; }
+.result-list::-webkit-scrollbar { width: 6px; }
+.result-list::-webkit-scrollbar-track { background: rgba(30, 41, 59, 0.5); border-radius: 10px; }
+.result-list::-webkit-scrollbar-thumb { background: #6b7280; border-radius: 10px; }
+.result-list::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
 
-/* ตกแต่ง Scrollbar ของช่อง Result ให้ดูสวยๆ */
-.result-list::-webkit-scrollbar { width: 5px; }
-.result-list::-webkit-scrollbar-thumb { background: #ddd; border-radius: 10px; }
+/* --- Animations --- */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
 /* --- History Specific Styles --- */
-.history-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+.history-header { display: flex; justify-content: space-between; align-items: center; }
+.filter-area { display: flex; align-items: center; gap: 10px; color: #6d28d9; font-weight: 600; font-size: 0.8rem; cursor: pointer; }
+.filter-icon { width: 18px; height: 18px; }
+.history-item { cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent; }
+.history-item:hover { background: linear-gradient(90deg, #7c3aed 0%, #4c1d95 100%); border-color: rgba(255, 255, 255, 0.2); }
+.history-date { position: absolute; bottom: 10px; right: 15px; font-size: 0.65rem; color: rgba(255, 255, 255, 0.6); }
+.history-item .result-details { width: 100%; padding-bottom: 10px; }
 
-.filter-area {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #6d28d9;
-    font-weight: 600;
-    font-size: 0.8rem;
-    cursor: pointer;
-}
-
-.filter-icon {
-    width: 18px;
-    height: 18px;
-}
-
-/* ลบอันเดิมทิ้ง แล้วใช้อันนี้แทนครับ */
-.history-item {
-    cursor: pointer;
-    transition: all 0.3s ease; /* ให้การเปลี่ยนสีมันนุ่มนวล */
-    border: 2px solid transparent; /* เตรียมเส้นขอบไว้กันมันกระตุก */
-}
-
-.history-item:hover {
-    /* ไม่ใช้ scale แล้วเพื่อกันกล่องขาวขยับ */
-    background: linear-gradient(90deg, #7c3aed 0%, #4c1d95 100%); /* สว่างขึ้นนิดนึง */
-    border-color: rgba(255, 255, 255, 0.2); /* เพิ่มเส้นขอบจางๆ */
-}
-
-.history-date {
-    position: absolute;
-    bottom: 10px;
-    right: 15px;
-    font-size: 0.65rem;
-    color: rgba(255, 255, 255, 0.6);
-}
-
-/* ปรับความสูงของรายการเผื่อที่ให้วันที่ */
-.history-item .result-details {
-    width: 100%;
-    padding-bottom: 10px;
-}
-
-/* --- ปรับแต่ง Modal History ให้ใหญ่และบังจอ --- */
-.modal-overlay {
-    display: none; 
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* ปรับพื้นหลังให้ดำสนิท 100% หรือ 0.95 เพื่อบังข้างหลัง */
-    background: rgba(0, 0, 0, 0.98); 
-    z-index: 10000;
-    justify-content: center;
-    align-items: center;
-    padding: 0; /* เอา padding ออกเพื่อให้ขยายได้เต็มที่ */
-}
-
-.modal-content {
-    background: #000; /* พื้นหลังกล่องดำสนิท */
-    width: 95%;      /* ขยายความกว้างเกือบเต็มจอ */
-    max-width: 1100px; /* กำหนดความกว้างสูงสุดให้ใหญ่ขึ้น */
-    height: auto;
-    max-height: 90vh; /* ไม่ให้สูงเกินหน้าจอ */
-    border-radius: 15px;
-    position: relative;
-    padding: 60px;    /* เพิ่มพื้นที่ว่างข้างในให้ดูโปร่งและใหญ่ */
-    border: 1px solid #333; /* ขอบจางๆ ให้ดูมีมิติ */
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 0 50px rgba(109, 40, 217, 0.2); /* เพิ่มรัศมีแสงม่วงจางๆ */
-}
-
-/* ปรับส่วนจัดวางข้างในให้ใหญ่ขึ้น */
-.modal-body {
-    display: flex;
-    gap: 60px; /* เพิ่มระยะห่างระหว่างรูปกับข้อความ */
-    align-items: center;
-}
-
-.modal-image-section {
-    flex: 1.5; /* ให้พื้นที่ฝั่งรูปเยอะขึ้น */
-}
-
-.modal-image-section img {
-    width: 100%;
-    height: auto;
-    border-radius: 12px;
-    object-fit: contain;
-}
-
-.modal-info-section {
-    flex: 1;
-}
-
-/* ปรับหัวข้อโรคให้ใหญ่สะใจ */
-.modal-info-section h2 {
-    color: #6d28d9;
-    font-size: 2.5rem; 
-    font-weight: 800;
-    margin-bottom: 40px;
-}
-
-.close-modal {
-    position: absolute;
-    top: 20px; right: 20px;
-    background: #ff0040;
-    border: none; border-radius: 50%;
-    width: 32px; height: 32px;
-    color: white; font-size: 20px; font-weight: bold;
-    cursor: pointer; display: flex; justify-content: center; align-items: center;
-}
-
+/* --- Modal History --- */
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.98); z-index: 10000; justify-content: center; align-items: center; padding: 0; }
+.modal-content { background: #000; width: 95%; max-width: 1100px; height: auto; max-height: 90vh; border-radius: 15px; position: relative; padding: 60px; border: 1px solid #333; display: flex; flex-direction: column; box-shadow: 0 0 50px rgba(109, 40, 217, 0.2); overflow-y: auto; }
+.close-modal { position: absolute; top: 20px; right: 20px; background: #ff0040; border: none; border-radius: 50%; width: 32px; height: 32px; color: white; font-size: 20px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 10; }
 .modal-body { display: flex; gap: 40px; align-items: center; }
 .modal-image-section { flex: 1.2; text-align: center; }
 .modal-image-section img { width: 100%; border-radius: 8px; }
 .modal-info-section { flex: 1; }
 .modal-info-section h2 { color: #6d28d9; font-size: 2rem; margin-bottom: 40px; }
-
-.info-row { 
-    display: flex; justify-content: space-between; 
-    margin-bottom: 30px; font-size: 1.3rem; font-weight: 600; color: #fff; 
-}
+.info-row { display: flex; justify-content: space-between; margin-bottom: 30px; font-size: 1.3rem; font-weight: 600; color: #fff; }
 .conf-text { color: #22c55e; }
 .severity-text { color: #ef4444; }
 .modal-footer { text-align: right; margin-top: 20px; color: #777; font-size: 0.8rem; }
+
+/* =========================================
+   สไตล์สำหรับ Link ชื่อโรคใน Modal History
+========================================= */
+.disease-link {
+    color: #60a5fa; /* สีฟ้าให้เข้ากับธีม */
+    text-decoration: underline; /* ขีดเส้นใต้ให้รู้ว่ากดได้ */
+    text-underline-offset: 4px; /* ขยับเส้นใต้ลงมานิดนึงให้ดูสวย */
+    transition: color 0.3s ease;
+}
+
+.disease-link:hover {
+    color: #93c5fd; /* สว่างขึ้นตอนเอาเมาส์ชี้ */
+}
+
+/* =========================================
+   ตั้งค่าการ Scroll ข้ามหน้า (Anchor Link)
+========================================= */
+html {
+    scroll-behavior: smooth; /* ทำให้หน้าเว็บเลื่อนลงมาแบบนุ่มนวล */
+}
+
+/* เผื่อระยะด้านบนไว้ 100px ไม่ให้ Navbar บังหัวข้อการ์ดตอนลิงก์พาวิ่งมาหา */
+.disease-card-wide {
+    scroll-margin-top: 100px; 
+}
+
+/* =========================================
+   🔥 MOBILE RESPONSIVE (โค้ดใหม่สำหรับมือถือและแท็บเล็ต)
+   ========================================= */
+@media (max-width: 768px) {
+    /* 1. จัดการ Navbar */
+    .navbar { padding: 15px 20px; }
+    
+    /* 2. จัดการหน้า Hero (หน้าแรก) ให้จัดเรียงลงมาเป็นแนวตั้ง */
+    .hero {
+        grid-template-columns: 1fr; /* เปลี่ยนจาก 2 คอลัมน์เป็น 1 คอลัมน์ */
+        margin: 80px auto 60px;
+        padding: 0 20px;
+        text-align: center;
+    }
+    .hero-content h1 {
+        flex-direction: column; /* ให้ลูกทุเรียนตกมาอยู่บรรทัดใหม่ */
+        font-size: 2.5rem;
+    }
+    .hero-image {
+        margin-left: 0;
+        margin-top: 40px;
+    }
+    .main-leaf {
+        width: 100%;
+        transform: rotate(0) scale(1); /* ลบการเอียงออกในมือถือจะได้ไม่ล้น */
+        animation: none; /* ปิดอนิเมชันใบไม้ไหวในมือถือเพื่อประหยัดแบตเตอรี่ */
+    }
+    .input-group {
+        margin: 0 auto;
+        flex-direction: column;
+        background: none;
+        border: none;
+        gap: 10px;
+    }
+    .input-group input {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        width: 100%;
+    }
+    .btn-get-started { width: 100%; }
+
+    /* 3. จัดการหน้า Diagnosis & History (ไม่ให้กล่องล้นจอ) */
+    .diagnosis-container {
+        align-items: flex-start; /* จอเล็กไม่ต้องดึงไปกลางจอ ให้เริ่มจากข้างบน */
+        padding: 20px 15px 100px 15px; /* เผื่อที่ด้านล่างไว้ 100px กันของโดนบัง */
+    }
+    .diagnosis-card {
+        padding: 20px; /* ลดกรอบด้านในลง เพื่อให้รูปและปุ่มมีพื้นที่ */
+        margin-top: 20px;
+    }
+    .upload-area {
+        min-height: 250px; /* ลดความสูงกล่องอัปโหลดลงในมือถือ */
+    }
+    .card-footer {
+        flex-direction: column; /* บังคับปุ่มยกเลิกกับเริ่มทำงาน ให้ซ้อนกันบนล่าง */
+    }
+
+    /* 4. จัดการ Modal หน้า History (Popup สรุปผล) */
+    .modal-content {
+        padding: 40px 20px 20px 20px; /* ลดขอบลง */
+    }
+    .modal-body {
+        flex-direction: column; /* จับรูปกับข้อความมาเรียงบนล่าง */
+        gap: 20px;
+    }
+    .modal-info-section h2 {
+        font-size: 1.5rem; /* ลดขนาดฟอนต์หัวข้อโรค */
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .info-row {
+        font-size: 1rem; /* ลดขนาดข้อความผลลัพธ์ */
+        margin-bottom: 15px;
+    }
+}
+
+/* =========================================
+   การ์ด All Diseases (แบบแนวกว้าง - ปรับปรุงความสูง)
+========================================= */
+
+/* กล่องใหญ่จัดเรียงการ์ด */
+.disease-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; 
+}
+
+.disease-card-wide {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: none;
+    display: flex;
+    flex-wrap: wrap; /* 🔥 หัวใจสำคัญ! ถ้าที่แคบ มันจะปัดข้อความลงไปอยู่ข้างล่างอัตโนมัติ */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.disease-card-wide:hover {
+    transform: translateY(-5px);
+    box-shadow: none;
+    border-color: #475569;
+}
+
+/* ฝั่งซ้าย: จัดการรูปภาพ */
+.disease-img-wrapper {
+    flex: 1 1 300px; /* ยืดหยุ่นได้ แต่ขอความกว้างขั้นต่ำ 300px */
+    min-height: 350px; /* ล็อกความสูงรูปไว้ไม่ให้แบน */
+    position: relative;
+    background: #0f172a;
+}
+
+.disease-img-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ฝั่งขวา: จัดการเนื้อหา */
+.disease-content {
+    flex: 2 1 350px; /* ขอพื้นที่กว้างขั้นต่ำ 350px ถ้าน้อยกว่านี้จะเด้งตกไปอยู่ใต้รูปทันที */
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.disease-title {
+    color: #60a5fa;
+    font-size: 1.6rem; 
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+}
+
+/* กล่องข้อความที่ต้องมี Scrollbar เวลายาวเกิน */
+.raw-description {
+    color: #cbd5e1;
+    font-size: 1rem; 
+    line-height: 1.6;
+    white-space: pre-line;
+    max-height: 320px; /* 🔥 ล็อกความสูงข้อความ ถ้าเกินให้ไถ Scrollbar เอา */
+    overflow-y: auto;
+    padding-right: 15px;
+    margin-top: -10px; 
+}
+
+/* Scrollbar สวยๆ (ของเดิม) */
+.raw-description::-webkit-scrollbar { width: 6px; }
+.raw-description::-webkit-scrollbar-track { background: transparent; }
+.raw-description::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+.raw-description::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+.desc-heading {
+    display: block;
+    font-weight: 600;
+    margin-top: 15px;
+    margin-bottom: 2px;
+    font-size: 1.05rem;
+}
+
+/* สีเฉพาะจุด */
+.text-purple { color: #c084fc; } 
+.text-green  { color: #4ade80; } 
+.text-blue   { color: #60a5fa; }

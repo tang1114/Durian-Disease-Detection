@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Diseases - Durian AI</title>
+    
+    <link rel="icon" type="image/png" href="/static/assets/durian.png">
+    
     <link rel="stylesheet" href="/static/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
@@ -14,26 +17,85 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo-area">
-                    <img src="/static/assets/durian.png" alt="logo" class="nav-logo">
-                    <span class="brand-name">Durian Disease Detection</span>
-                </a>
+                <img src="/static/assets/durian.png" alt="logo" class="nav-logo">
+                <span class="brand-name">Durian Disease Detection</span>
             </div>
-            <div class="nav-links">
-                <a href="/diagnosis">Diagnosis</a>
-                <a href="/history">History</a>
-                <a href="/all-diseases">All Diseases</a>
-            </div>
-            <div class="auth-buttons">
-                <a href="/register" class="btn-text" style="text-decoration: none; margin-right: 15px;">Register</a>
-                <a href="/login" class="btn-primary" style="text-decoration: none;">Login</a>
+            
+            <button class="hamburger" id="hamburger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="menu-wrapper" id="nav-menu">
+                <div class="nav-links">
+                    <a href="/diagnosis">Diagnosis</a>
+                    <a href="/history">History</a>
+                    <a href="/all-diseases">All Diseases</a>
+                </div>
+                <div class="auth-buttons">
+                    {% if session.get('user_id') %}
+                        <span style="color: #9ca3af; margin-right: 15px;"><b>{{ session.get('username') }}</b></span>
+                        <a href="/logout" class="btn-primary" style="text-decoration: none; background-color: #ef4444;">Logout</a>
+                    {% else %}
+                        <a href="/register" class="btn-text" style="text-decoration: none; margin-right: 15px;">Register</a>
+                        <a href="/login" class="btn-primary" style="text-decoration: none;">Login</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </nav>
+    <div id="require-login-alert" class="custom-alert-overlay" style="display: none;">
+        <div class="custom-alert-box">
+            <h3 style="color: #f3e8ff; margin-bottom: 10px; font-size: 1.3rem;">กรุณาลงชื่อเข้าใช้</h3>
+            <p style="color: #9ca3af; font-size: 0.95rem; margin-bottom: 25px;">
+                Please login first to access this page.
+            </p>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button type="button" class="btn-text" onclick="closeLoginAlert()" style="padding: 10px 20px; font-size: 0.9rem;">
+                    ยกเลิก (Cancel)
+                </button>
+                <a href="/login" class="custom-alert-btn" style="text-decoration: none; display: inline-block; font-size: 0.9rem;">
+                    ไปหน้าเข้าสู่ระบบ (Login)
+                </a>
+            </div>
+        </div>
+    </div>
 
-    <main>
-        </main>
+        <main style="padding: 40px 20px; min-height: 80vh;">
+                <div style="max-width: 1200px; margin: 0 auto;">
+                    
+                    <div style="text-align: center; margin-bottom: 40px;">
+                        <h1 style="color: #ffffff; font-size: 2.2rem; margin-bottom: 10px;">ข้อมูลโรคใบทุเรียน</h1>
+                        <p style="color: #9ca3af; font-size: 1rem;">Durian Leaf Diseases Information</p>
+                    </div>
 
+                    <div class="disease-list-container">
+                        
+                        {% for disease in diseases %}
+                        <div class="disease-card-wide" data-id="{{ disease.disease_id }}" id="{{ disease.disease_name }}">
+                            
+                            <div class="disease-img-wrapper">
+                                <img src="/static/assets/diseases/{{ disease.disease_name }}.jpg" alt="{{ disease.disease_name }}">
+                            </div>
+                            
+                            <div class="disease-content">
+                                <h3 class="disease-title">
+                                    {{ disease.disease_name | replace('_', ' ') }}
+                                </h3>
+                                
+                                <div class="raw-description">
+                                    {{ disease.description }}
+                                </div>
+                            </div>
+
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </main>
+            
     <script src="/static/script.js"></script>
 </body>
-
 </html>

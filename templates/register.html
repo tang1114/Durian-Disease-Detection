@@ -4,7 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Durian Disease Detection</title>
+    <title>All Diseases - Durian AI</title>
+    
+    <link rel="icon" type="image/png" href="/static/assets/durian.png">
+    
     <link rel="stylesheet" href="/static/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
@@ -17,17 +20,48 @@
                 <img src="/static/assets/durian.png" alt="logo" class="nav-logo">
                 <span class="brand-name">Durian Disease Detection</span>
             </div>
-            <div class="nav-links">
-                <a href="/diagnosis">Diagnosis</a>
-                <a href="/history">History</a>
-                <a href="/all-diseases">All Diseases</a>
-            </div>
-            <div class="auth-buttons">
-                <a href="/register" class="btn-text" style="text-decoration: none; margin-right: 15px;">Register</a>
-                <a href="/login" class="btn-primary" style="text-decoration: none;">Login</a>
+            
+            <button class="hamburger" id="hamburger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="menu-wrapper" id="nav-menu">
+                <div class="nav-links">
+                    <a href="/diagnosis">Diagnosis</a>
+                    <a href="/history">History</a>
+                    <a href="/all-diseases">All Diseases</a>
+                </div>
+                <div class="auth-buttons">
+                    {% if session.get('user_id') %}
+                        <span style="color: #9ca3af; margin-right: 15px;"><b>{{ session.get('username') }}</b></span>
+                        <a href="/logout" class="btn-primary" style="text-decoration: none; background-color: #ef4444;">Logout</a>
+                    {% else %}
+                        <a href="/register" class="btn-text" style="text-decoration: none; margin-right: 15px;">Register</a>
+                        <a href="/login" class="btn-primary" style="text-decoration: none;">Login</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </nav>
+
+    <div id="require-login-alert" class="custom-alert-overlay" style="display: none;">
+        <div class="custom-alert-box">
+            <h3 style="color: #f3e8ff; margin-bottom: 10px; font-size: 1.3rem;">กรุณาลงชื่อเข้าใช้</h3>
+            <p style="color: #9ca3af; font-size: 0.95rem; margin-bottom: 25px;">
+                Please login first to access this page.
+            </p>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button type="button" class="btn-text" onclick="closeLoginAlert()" style="padding: 10px 20px; font-size: 0.9rem;">
+                    ยกเลิก (Cancel)
+                </button>
+                <a href="/login" class="custom-alert-btn" style="text-decoration: none; display: inline-block; font-size: 0.9rem;">
+                    ไปหน้าเข้าสู่ระบบ (Login)
+                </a>
+            </div>
+        </div>
+    </div>
 
     <main class="hero">
         <div class="hero-content">
@@ -36,7 +70,7 @@
                 <form action="/register" method="POST">
                     <div class="form-group" style="margin-bottom: 15px; text-align: left;">
                         <label style="display: block; color: #9ca3af; margin-bottom: 5px;">Email</label>
-                        <input type="email" name="email" placeholder="example@gmail.com" required
+                        <input type="email" id="email" name="email" placeholder="example@gmail.com" required
                             style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white;">
                     </div>
                     <div class="form-group" style="margin-bottom: 15px; text-align: left;">

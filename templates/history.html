@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>History - Durian AI</title>
+    <title>All Diseases - Durian AI</title>
+    
+    <link rel="icon" type="image/png" href="/static/assets/durian.png">
+    
     <link rel="stylesheet" href="/static/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
@@ -16,56 +19,139 @@
                 <img src="/static/assets/durian.png" alt="logo" class="nav-logo">
                 <span class="brand-name">Durian Disease Detection</span>
             </div>
-            <div class="nav-links">
-                <a href="/diagnosis">Diagnosis</a>
-                <a href="/history">History</a>
-                <a href="/all-diseases">All Diseases</a>
-            </div>
-            <div class="auth-buttons">
-                <a href="/register" class="btn-text" style="text-decoration: none; margin-right: 15px;">Register</a>
-                <a href="/login" class="btn-primary" style="text-decoration: none;">Login</a>
+            
+            <button class="hamburger" id="hamburger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="menu-wrapper" id="nav-menu">
+                <div class="nav-links">
+                    <a href="/diagnosis">Diagnosis</a>
+                    <a href="/history">History</a>
+                    <a href="/all-diseases">All Diseases</a>
+                </div>
+                <div class="auth-buttons">
+                    {% if session.get('user_id') %}
+                        <span style="color: #9ca3af; margin-right: 15px;"><b>{{ session.get('username') }}</b></span>
+                        <a href="/logout" class="btn-primary" style="text-decoration: none; background-color: #ef4444;">Logout</a>
+                    {% else %}
+                        <a href="/register" class="btn-text" style="text-decoration: none; margin-right: 15px;">Register</a>
+                        <a href="/login" class="btn-primary" style="text-decoration: none;">Login</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </nav>
+
+    <div id="require-login-alert" class="custom-alert-overlay" style="display: none;">
+        <div class="custom-alert-box">
+            <h3 style="color: #f3e8ff; margin-bottom: 10px; font-size: 1.3rem;">กรุณาลงชื่อเข้าใช้</h3>
+            <p style="color: #9ca3af; font-size: 0.95rem; margin-bottom: 25px;">
+                Please login first to access this page.
+            </p>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button type="button" class="btn-text" onclick="closeLoginAlert()" style="padding: 10px 20px; font-size: 0.9rem;">
+                    ยกเลิก (Cancel)
+                </button>
+                <a href="/login" class="custom-alert-btn" style="text-decoration: none; display: inline-block; font-size: 0.9rem;">
+                    ไปหน้าเข้าสู่ระบบ (Login)
+                </a>
+            </div>
+        </div>
+    </div>
 
     <main class="diagnosis-container">
         <div class="diagnosis-card history-main-card">
             <div class="card-header history-header">
                 <h3>Diagnosis History</h3>
-                <div class="filter-area">
-                    <span>FILTER</span>
+                <div class="filter-area" onclick="toggleFilterPanel()" style="cursor: pointer;">
+                    <span>FILTER & SORT</span>
                     <img src="/static/assets/tool.png" alt="filter" class="filter-icon"> 
                 </div>
             </div>
-            <hr class="header-line">
+
+
+            <div id="filter-panel" style="display: none; background: #ffffff; padding: 25px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #d1d5db; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                    
+                    <div style="flex: 1; min-width: 250px;">
+                                <label style="font-weight: 600; color: #374151; display: block; margin-bottom: 8px;">ชื่อโรค (Disease Class)</label>
+                                <select id="filter-disease" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #9ca3af; background-color: #f9fafb;">
+                                    <option value="All">ทั้งหมด (All)</option>
+                                    <option value="Leaf_Algal">สาหร่าย (Leaf Algal)</option>
+                                    <option value="Leaf_Blight">ใบไหม้ (Leaf Blight)</option>
+                                    <option value="Leaf_Colletotrichum">แอนแทรคโนส (Leaf Colletotrichum)</option>
+                                    <option value="Leaf_Healthy">ใบปกติ (Leaf Healthy)</option>
+                                    <option value="Leaf_Phomopsis">ใบจุด (Leaf Phomopsis)</option>
+                                    <option value="Leaf_Rhizoctonia">ใบติด (Leaf Rhizoctonia)</option>
+                                </select>
+                            </div>
+
+                            <div style="flex: 1; min-width: 300px;">
+                                <label style="font-weight: 600; color: #374151; display: block; margin-bottom: 8px;">ช่วงวันที่ (Date Range)</label>
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <input type="date" id="filter-start-date" style="flex: 1; padding: 9px; border-radius: 8px; border: 1px solid #9ca3af;">
+                                    <span style="color: #6b7280;">-</span>
+                                    <input type="date" id="filter-end-date" style="flex: 1; padding: 9px; border-radius: 8px; border: 1px solid #9ca3af;">
+                                </div>
+                            </div>
+
+                            <div style="flex: 1; min-width: 180px;">
+                                <label style="font-weight: 600; color: #374151; display: block; margin-bottom: 8px;">ระดับความรุนแรง (Severity)</label>
+                                <select id="filter-severity" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #9ca3af;">
+                                    <option value="All">ทั้งหมด (All)</option>
+                                    <option value="Safe">ปกติ (Safe)</option>
+                                    <option value="Low">ต่ำ (Low)</option>
+                                    <option value="Medium">ปานกลาง (Medium)</option>
+                                    <option value="High">สูง (High)</option>
+                                </select>
+                            </div>
+
+                            <div style="flex: 1; min-width: 220px;">
+                                <label style="font-weight: 600; color: #374151; display: block; margin-bottom: 8px;">เรียงลำดับตาม (Sort By)</label>
+                                <select id="sort-by" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #9ca3af;">
+                                    <option value="Newest">ล่าสุดไปเก่าสุด (Newest)</option>
+                                    <option value="Oldest">เก่าสุดไปล่าสุด (Oldest)</option>
+                                    <option value="ConfHigh">ความมั่นใจ AI: สูง - ต่ำ (Confidence: High-Low)</option>
+                                    <option value="ConfLow">ความมั่นใจ AI: ต่ำ - สูง (Confidence: Low-High)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                <div style="margin-top: 25px; display: flex; gap: 12px; justify-content: flex-end; border-top: 1px solid #e5e7eb; padding-top: 20px;">
+                        <button onclick="clearFilters()" style="padding: 10px 20px; background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; border-radius: 8px; cursor: pointer; font-weight: 500;">ล้างค่า (Reset)</button>
+                        <button onclick="applyAllFilters()" style="padding: 10px 30px; background: #6d28d9; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">ค้นหา (Search)</button>
+                </div>
+            </div>
 
             <div class="result-list">
-                <div class="result-item history-item" onclick="openHistoryDetail()">
-                    <img src="/static/assets/leaf01.png" class="result-img">
-                    <div class="result-details">
-                        <h4>โรคจุดสนิมสาหร่าย (Agal Spot)</h4>
-                        <p>ความมั่นใจ : <span class="conf-high">78 %</span> &nbsp;&nbsp; ความรุนแรง : <span class="severity-high">HIGHT</span></p>
-                        <span class="history-date">วันที่ ( DATE ) 24/03/2026</span>
+                {% if history %}
+                    {% for item in history %}
+                    {% set formatted_date = item.created_at.strftime('%d/%m/%Y') %}
+                    
+                    <div class="result-item history-item" 
+                         data-disease="{{ item.prediction }}" 
+                         data-severity="{{ item.severity }}" 
+                         data-confidence="{{ (item.confidence * 100) | int }}" 
+                         data-timestamp="{{ (item.created_at.timestamp() * 1000) | int }}"
+                         onclick="openHistoryDetail('{{ item.image_url }}', '{{ item.prediction }}', '{{ (item.confidence * 100) | int }}', '{{ item.severity }}', '{{ formatted_date }}')">
+                        
+                        <img src="{{ item.image_url }}" class="result-img">
+                        <div class="result-details">
+                            <h4>{{ item.prediction | replace('_', ' ') }}</h4>
+                            <p>ความมั่นใจ : <span class="conf-high">{{ "%.0f"|format(item.confidence * 100) }} %</span> &nbsp;&nbsp; ความรุนแรง : <span class="severity-high">{{ item.severity }}</span></p>
+                            <span class="history-date">วันที่ ( DATE ) {{ formatted_date }}</span>
+                        </div>
                     </div>
-                </div>
-
-                <div class="result-item history-item" onclick="openHistoryDetail()">
-                    <img src="/static/assets/leaf02.png" class="result-img">
-                    <div class="result-details">
-                        <h4>ไม่สามารถระบุโรคได้อย่างชัดเจน</h4>
-                        <p>(Cannot clearly identify disease)</p>
-                        <span class="history-date">วันที่ ( DATE ) 24/03/2026</span>
+                    {% endfor %}
+                {% else %}
+                    <div style="text-align: center; color: #9ca3af; padding: 40px;">
+                        <p>You haven't analyzed any leaves yet.</p>
+                        <a href="/diagnosis" class="btn-primary" style="display: inline-block; margin-top: 15px; text-decoration: none;">Try Diagnosis Now</a>
                     </div>
-                </div>
-
-                <div class="result-item history-item" onclick="openHistoryDetail()">
-                    <img src="/static/assets/leaf03.png" class="result-img">
-                    <div class="result-details">
-                        <h4>โรคใบจุด หรือ โรคแอนแทรคโนส</h4>
-                        <p>ความมั่นใจ : <span class="conf-high">88 %</span> &nbsp;&nbsp; ความรุนแรง : <span class="severity-high">HIGHT</span></p>
-                        <span class="history-date">วันที่ ( DATE ) 24/03/2026</span>
-                    </div>
-                </div>
+                {% endif %}
             </div>
         </div>
     </main>
@@ -76,25 +162,24 @@
             
             <div class="modal-body">
                 <div class="modal-image-section">
-                    <img src="/static/assets/leaf01.png" id="modal-img">
-                    <p class="image-filename">leaf01.png</p>
+                    <img src="" id="modal-img">
                 </div>
                 
                 <div class="modal-info-section">
-                    <h2 id="modal-title">โรคจุดสนิมสาหร่าย (Agal Spot)</h2>
+                    <h2 id="modal-title">โรค...</h2>
                     <div class="info-row">
                         <span>ความมั่นใจ</span>
-                        <span class="conf-text" id="modal-conf">78 %</span>
+                        <span class="conf-text" id="modal-conf">0 %</span>
                     </div>
                     <div class="info-row">
                         <span>ระดับความรุนแรง</span>
-                        <span class="severity-text" id="modal-severity">HIGHT</span>
+                        <span class="severity-text" id="modal-severity">-</span>
                     </div>
                 </div>
             </div>
             
             <div class="modal-footer">
-                <span id="modal-date">วันที่ ( DATE ) 24/03/2026</span>
+                <span id="modal-date">วันที่ ( DATE ) -</span>
             </div>
         </div>
     </div>
