@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Diseases - Durian AI</title>
+    <title>Diagnosis - Durian AI</title>
     
     <link rel="icon" type="image/png" href="/static/assets/durian.png">
     
@@ -71,14 +71,13 @@
                 <div class="preview-wrapper">
                      <div id="previewContainer" class="preview-grid"></div>
                 </div>
-                <input type="file" id="fileInput" hidden multiple onchange="previewImage(event)">
-                <img id="preview" class="hidden" style="max-width:200px; margin-top:10px;">
+                <input type="file" id="fileInput" hidden multiple accept=".jpg, .jpeg, .png" onchange="previewImage(event)">
                 <p id="uploadText">No images selected</p>
             </div>
             <div class="upload-controls">
                 <button class="btn-upload-secondary" onclick="chooseFile()">Upload</button>
-                <p class="format-info">Format: JPG, JPEG, PNG (max 10 images per upload, 5MB per image)</p>
-            </div>
+                <p class="format-info">Format: JPG, JPEG, PNG (max 50 images per upload)</p>
+                </div>
             <div class="card-footer">
                 <button class="btn-Delete" onclick="clearUploads()">Delete All</button>
                 <button class="btn-start" id="start-btn" onclick="startAnalysis()">Start Analysis</button>

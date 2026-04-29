@@ -405,8 +405,11 @@ body {
 .result-details { flex: 1; }
 .result-details h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 3px; color: #f3e8ff; }
 .result-details p { font-size: 0.8rem; color: #cbd5e1; margin: 0; }
-.conf-high { color: #4ade80; font-weight: bold; } 
-.severity-high { color: #f87171; font-weight: bold; } 
+.conf-high { color: #4ade80; font-weight: bold; }
+.severity-safe   { color: #22c55e; font-weight: bold; } /* สีเขียว */
+.severity-low    { color: #eab308; font-weight: bold; } /* สีเหลือง */
+.severity-medium { color: #f97316; font-weight: bold; } /* สีส้ม */
+.severity-high   { color: #ef4444; font-weight: bold; } /* สีแดง */
 .result-list { flex: 1; overflow-y: auto; padding-right: 8px; margin-bottom: 20px; max-height: 350px; }
 .result-list::-webkit-scrollbar { width: 6px; }
 .result-list::-webkit-scrollbar-track { background: rgba(30, 41, 59, 0.5); border-radius: 10px; }
@@ -438,7 +441,6 @@ body {
 .modal-info-section h2 { color: #6d28d9; font-size: 2rem; margin-bottom: 40px; }
 .info-row { display: flex; justify-content: space-between; margin-bottom: 30px; font-size: 1.3rem; font-weight: 600; color: #fff; }
 .conf-text { color: #22c55e; }
-.severity-text { color: #ef4444; }
 .modal-footer { text-align: right; margin-top: 20px; color: #777; font-size: 0.8rem; }
 
 /* =========================================
@@ -547,7 +549,6 @@ html {
 /* =========================================
    การ์ด All Diseases (แบบแนวกว้าง - ปรับปรุงความสูง)
 ========================================= */
-
 /* กล่องใหญ่จัดเรียงการ์ด */
 .disease-list-container {
     display: flex;

@@ -23,16 +23,50 @@ function chooseFile() {
 // ฟังก์ชันสำหรับแสดงรูปตัวอย่าง (ดัดแปลงให้เก็บลง globalFiles)
 function previewImage(event) {
     const files = event.target.files;
+    
+    // กำหนดประเภทไฟล์ที่อนุญาต และขนาดไฟล์สูงสุด (100MB = 100 * 1024 * 1024 Bytes)
+    const allowedTypes = ['image/png', 'image/jpeg']; 
+    const MAX_TOTAL_SIZE = 100 * 1024 * 1024; 
 
-    if (globalFiles.length + files.length > 10) {
-        showCustomAlert("อัปโหลดได้สูงสุด 10 รูปต่อครั้ง<br>");
+    // 1. ตรวจสอบจำนวนไฟล์ (รวมของเดิมและของใหม่ต้องไม่เกิน 50)
+    if (globalFiles.length + files.length > 50) {
+        showCustomAlert("อัปโหลดได้สูงสุด 50 รูปต่อครั้ง");
         document.getElementById('fileInput').value = ''; 
         return;
     }
 
-    // นำไฟล์เข้า Array
+    // คำนวณขนาดไฟล์รวมที่อยู่ใน globalFiles ปัจจุบัน
+    let totalSize = globalFiles.reduce((sum, file) => sum + file.size, 0);
+    let validFiles = [];
+
+    // 2. ตรวจสอบประเภทไฟล์และขนาดไฟล์
     for (let i = 0; i < files.length; i++) {
-        globalFiles.push(files[i]);
+        const file = files[i];
+
+        // ตรวจสอบนามสกุล/ประเภทไฟล์
+        if (!allowedTypes.includes(file.type)) {
+            showCustomAlert("ระบบรองรับเฉพาะไฟล์ .png, .jpg และ .jpeg เท่านั้น");
+            document.getElementById('fileInput').value = ''; 
+            return;
+        }
+
+        // บวกขนาดไฟล์ใหม่เข้าไป
+        totalSize += file.size;
+
+        // ตรวจสอบว่าขนาดรวมเกิน 100MB หรือไม่
+        if (totalSize > MAX_TOTAL_SIZE) {
+            showCustomAlert("ขนาดไฟล์รวมทั้งหมดต้องไม่เกิน 100MB");
+            document.getElementById('fileInput').value = ''; 
+            return;
+        }
+
+        // ถ้าผ่านเงื่อนไขทั้งหมด เก็บไว้ใน Array ชั่วคราวก่อน
+        validFiles.push(file);
+    }
+
+    // 3. นำไฟล์ที่ผ่านการตรวจสอบเข้า globalFiles
+    for (let i = 0; i < validFiles.length; i++) {
+        globalFiles.push(validFiles[i]);
     }
 
     document.getElementById('fileInput').value = ''; // เคลียร์ค่า input
@@ -196,20 +230,13 @@ function renderResults(results) {
 
     results.forEach(item => {
         const confidencePercent = Math.round(item.confidence * 100);
-        
-        //  เอา "_" ออกจากชื่อโรค
         const cleanPredictionName = item.prediction.replace(/_/g, ' ');
 
-        //  กำหนดสีให้ความรุนแรง
-        let severityColor = "";
-        if (item.severity === "Safe") {
-            severityColor = "#4ade80"; // สีเขียว
-        } else if (item.severity === "Medium") {
-            severityColor = "#fbbf24"; // สีเหลือง
-        } else {
-            severityColor = "#f87171"; // สีแดง
-        }
+        // แปลงตัวพิมพ์เล็กเพื่อดึงคลาสให้ตรงกับ CSS
+        // เช่น Safe -> severity-safe, Medium -> severity-medium
+        let severityClass = "severity-" + item.severity.toLowerCase();
 
+        // สร้าง HTML โดยใช้ Backtick (` `) ถึงจะสามารถใส่ ${ } ได้
         const html = `
             <div class="result-item-card">
                 <img src="${item.image_url}" class="result-img" alt="Leaf Result">
@@ -217,7 +244,7 @@ function renderResults(results) {
                     <h4>${cleanPredictionName}</h4>
                     <p>
                         ความมั่นใจ : <span class="conf-high">${confidencePercent} %</span> &nbsp;&nbsp; 
-                        ความรุนแรง : <span class="severity-high" style="color: ${severityColor};">${item.severity}</span>
+                        ความรุนแรง : <span class="${severityClass}">${item.severity}</span>
                     </p>
                 </div>
             </div>
@@ -225,7 +252,6 @@ function renderResults(results) {
         container.innerHTML += html;
     });
 }
-
 // ฟังก์ชันลบรูปทั้งหมด (อัปเดตให้เคลียร์ globalFiles ด้วย)
 function clearUploads() {
     document.getElementById('fileInput').value = '';
@@ -280,6 +306,14 @@ function openHistoryDetail(imageUrl, diseaseName, confidence, severity, date) {
     document.getElementById('modal-severity').textContent = severity;
     document.getElementById('modal-date').textContent = 'วันที่ ( DATE ) ' + date;
     document.getElementById('history-modal').style.display = 'flex';
+
+    // จัดการข้อมูลและ "สี" ของความรุนแรง
+    const severityElement = document.getElementById('modal-severity');
+    severityElement.innerText = severity; // ใส่ข้อความ (Safe, Low, Medium, High)
+    
+    // เคลียร์ Class สีเก่าที่อาจจะค้างอยู่ออกไปก่อน
+    severityElement.className = ""; 
+    severityElement.classList.add("severity-" + severity.toLowerCase());
 }
 
 function closeHistoryDetail() {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Diseases - Durian AI</title>
+    <title>History - Durian AI</title>
     
     <link rel="icon" type="image/png" href="/static/assets/durian.png">
     
@@ -141,7 +141,7 @@
                         <img src="{{ item.image_url }}" class="result-img">
                         <div class="result-details">
                             <h4>{{ item.prediction | replace('_', ' ') }}</h4>
-                            <p>ความมั่นใจ : <span class="conf-high">{{ (item.confidence * 100) | round | int }} %</span> &nbsp;&nbsp; ความรุนแรง : <span class="severity-high">{{ item.severity }}</span></p>
+                            <p>ความมั่นใจ : <span class="conf-high">{{ (item.confidence * 100) | round | int }} %</span> &nbsp;&nbsp; ความรุนแรง : <span class="severity-{{ item.severity | lower }}">{{ item.severity }}</span></p>
                             <span class="history-date">วันที่ ( DATE ) {{ formatted_date }}</span>
                         </div>
                     </div>
@@ -173,7 +173,7 @@
                     </div>
                     <div class="info-row">
                         <span>ระดับความรุนแรง</span>
-                        <span class="severity-text" id="modal-severity">-</span>
+                        <span id="modal-severity" class="">-</span>
                     </div>
                 </div>
             </div>
